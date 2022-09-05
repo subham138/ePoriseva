@@ -7,7 +7,7 @@ const mysql = require('mysql');
 const app = express();
 const session = require('express-session');
 const http = require('http');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 
 const multer = require("multer")
 
@@ -50,8 +50,8 @@ app.use(session({
 // Use Session in all view pages
 app.use((req, res, next) => {
     res.locals.user = req.session.user;
-	res.locals.active = req.path.split('/')[1];
-	res.locals.message = req.session.message;
+    res.locals.active = req.path.split('/')[1];
+    res.locals.message = req.session.message;
     delete req.session.message;
     next();
 })
@@ -88,14 +88,14 @@ app.get('/sample', (req, res) => {
 
 // LANDING PAGE
 app.get('/dashboard', (req, res) => {
-	let user = req.session.user;
+    let user = req.session.user;
     //console.log(user);
     if (user) {
         res.render('dashboard/view');
     } else {
         res.redirect('/login');
     }
-	//res.render('dashboard/view');
+    //res.render('dashboard/view');
 })
 
 app.post('/reg', (req, res) => {
@@ -128,7 +128,7 @@ app.get('/update/:id', (req, res, next) => {
 })
 
 app.get('/test', (req, res) => {
-	res.render('test');
+    res.render('test');
 })
 
 app.get('/new_register', async (req, res) => {
@@ -257,22 +257,22 @@ app.post('/profile', (req, res) => {
             db.query(sql, (err, result) => {
                 if (err) {
                     console.log(err);
-					req.session.message = { type: 'danger', message: 'Profile Not Updated!! Something Went Wrong' };
+                    req.session.message = { type: 'danger', message: 'Profile Not Updated!! Something Went Wrong' };
                     res.redirect('/profile');
                 } else {
                     // console.log({ result });
                     //var user_sql = `SELECT * FROM users WHERE id = "${data.id}"`;
-					var user_sql = `SELECT a.*, b.client_name, b.lat, b.longt, b.mobile_no, b.email, b.address_1 as address FROM users a, md_client b WHERE a.client_id=b.id AND a.id = "${data.id}"`;
+                    var user_sql = `SELECT a.*, b.client_name, b.lat, b.longt, b.mobile_no, b.email, b.address_1 as address FROM users a, md_client b WHERE a.client_id=b.id AND a.id = "${data.id}"`;
                     db.query(user_sql, (err, result) => {
                         if (err) {
-							req.session.message = { type: 'danger', message: 'Profile Not Updated!! Something Went Wrong' };
-							res.redirect('/profile');
+                            req.session.message = { type: 'danger', message: 'Profile Not Updated!! Something Went Wrong' };
+                            res.redirect('/profile');
                             console.log(err);
                         } else {
                             req.session.user = result;
                             // console.log({ after: req.session.user });
                             req.session.reload((err) => { if (err) { console.error(err); } });
-							req.session.message = { type: 'success', message: 'Profile Updated Successfully' };
+                            req.session.message = { type: 'success', message: 'Profile Updated Successfully' };
                             res.redirect('/profile');
                         }
                     })
@@ -298,21 +298,21 @@ app.get('/send_register_email', async (req, res) => {
 /*var requestIp = require('request-ip');
 app.set('trust proxy', true);
 app.get('/ip', async (req, res) => {
-	var clientIp = await requestIp.getClientIp(req);
-		var idAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
-	const ip = req.headers['x-forwarded-for'] ||
+    var clientIp = await requestIp.getClientIp(req);
+        var idAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
+    const ip = req.headers['x-forwarded-for'] ||
      req.socket.remoteAddress ||
      req.ip || 'HI';
-	res.send({clientIp, idAddress, e: req.ip, f: req.socket.remoteAddress, ip})
+    res.send({clientIp, idAddress, e: req.ip, f: req.socket.remoteAddress, ip})
 })
 
 const address = require('address')
 app.get('/e', (req, res) => {
     var ip = address.ip();
-	var lo = address.ip('lo')
-	address.mac(function (err, addr) {
+    var lo = address.ip('lo')
+    address.mac(function (err, addr) {
         console.log({ addr }); // '78:ca:39:b0:e6:7d'
-		res.send(addr)
+        res.send(addr)
     });
     console.log({ ip });
     //res.send({ip, lo})

@@ -3,6 +3,12 @@ const router = express.Router();
 const request = require('request');
 const xml2js = require('xml2js');
 const pay_controller = require('../controllers/pay_controller');
+
+var agntId = "IN01IN03AGT000000002";
+var keyword = "AIAGT$20170704",
+    client_id = "3b67954e-0045-4455-9a94-2b98a82c07d7",
+    client_secret = "uQ1cQ3qB0jG6rP0qY1pF2wB8eQ1lO6oJ0eJ7pK1eG2bB0iD3kV",
+    end_point = "https://ibluatapig.indusind.com/app/uat/HubComfort/COUHubComfort/";
 // const fs = require('fs');
 // const { userInfo } = require('os');
 
@@ -39,14 +45,14 @@ router.get('/get_biller_catagory', async (req, res, next) => {
     try {
         var category = {
             'method': 'POST',
-            'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetBillerCategories',
+            'url': end_point + 'GetBillerCategories',
             'headers': {
-                'X-IBM-Client-Secret': 'oQ7iX8fN3hA0jQ6vI5sO2bE3hU4dR5iJ6bA5cM6kK6oA2bM0rM',
-                'X-IBM-Client-Id': 'ec9370b4-dd3b-4f58-8c33-6f6e104ab642',
+                'X-IBM-Client-Secret': client_secret,
+                'X-IBM-Client-Id': client_id,
                 'Content-Type': 'application/xml',
                 'Cookie': 'ASP.NET_SessionId=eprlnvyulnga5rpjvsbqovt1'
             },
-            body: '<root><AgntId>IN01IN20INTU00000001</AgntId><Keyword>21835678617541456491</Keyword></root>'
+            body: '<root><AgntId>' + agntId + '</AgntId><Keyword>' + keyword + '</Keyword></root>'
 
         };
         await request(category, function (error, catResponse) {
@@ -71,17 +77,17 @@ router.get('/get_biller_catagory', async (req, res, next) => {
 
 router.get('/get_state', async (req, res, next) => {
     try {
-		var cat_id = req.query.cat_id;
+        var cat_id = req.query.cat_id;
         var options = {
             'method': 'POST',
-            'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetLocations',
+            'url': end_point + 'GetLocations',
             'headers': {
-                'X-IBM-Client-Secret': 'oQ7iX8fN3hA0jQ6vI5sO2bE3hU4dR5iJ6bA5cM6kK6oA2bM0rM',
-                'X-IBM-Client-Id': 'ec9370b4-dd3b-4f58-8c33-6f6e104ab642',
+                'X-IBM-Client-Secret': client_secret,
+                'X-IBM-Client-Id': client_id,
                 'Content-Type': 'application/xml',
                 'Cookie': 'ASP.NET_SessionId=eprlnvyulnga5rpjvsbqovt1'
             },
-            body: '<root><AgntId>IN01IN20INTU00000001</AgntId><Keyword>21835678617541456491</Keyword><CategoryID>'+ cat_id +'</CategoryID></root>'
+            body: '<root><AgntId>' + agntId + '</AgntId><Keyword>' + keyword + '</Keyword><CategoryID>' + cat_id + '</CategoryID></root>'
 
         };
         request(options, function (error, response) {
@@ -106,14 +112,14 @@ router.get('/get_city', async (req, res, next) => {
     try {
         var options = {
             'method': 'POST',
-            'url': 'https://ibluatapig.indusind.com/app/uat/HubComfort/BBPSHubComfort/GetCities',
+            'url': end_point + 'GetCities',
             'headers': {
-                'X-IBM-Client-Secret': 'uQ1cQ3qB0jG6rP0qY1pF2wB8eQ1lO6oJ0eJ7pK1eG2bB0iD3kV',
-                'X-IBM-Client-Id': '3b67954e-0045-4455-9a94-2b98a82c07d7',
+                'X-IBM-Client-Secret': client_secret,
+                'X-IBM-Client-Id': client_id,
                 'Content-Type': 'application/xml',
                 'Cookie': 'ASP.NET_SessionId=eprlnvyulnga5rpjvsbqovt1'
             },
-            body: '<root><AgntId>IN01IN03AGT000000002</AgntId><Keyword>AIAGT$20170704</Keyword><StId>' + req.query.StId + '</StId></root>'
+            body: '<root><AgntId>' + agntId + '</AgntId><Keyword>' + keyword + '</Keyword><StId>' + req.query.StId + '</StId></root>'
 
         };
         request(options, function (error, response) {
@@ -136,18 +142,18 @@ router.get('/get_city', async (req, res, next) => {
 
 router.get('/get_biller_by_cov', async (req, res, next) => {
     try {
-		var cat_id = req.query.cat_id,
-			cov = req.query.cov;
+        var cat_id = req.query.cat_id,
+            cov = req.query.cov;
         var options = {
             'method': 'POST',
-            'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetBillers',
+            'url': end_point + 'GetBillers',
             'headers': {
-                'X-IBM-Client-Secret': 'oQ7iX8fN3hA0jQ6vI5sO2bE3hU4dR5iJ6bA5cM6kK6oA2bM0rM',
-                'X-IBM-Client-Id': 'ec9370b4-dd3b-4f58-8c33-6f6e104ab642',
+                'X-IBM-Client-Secret': client_secret,
+                'X-IBM-Client-Id': client_id,
                 'Content-Type': 'application/xml',
                 'Cookie': 'ASP.NET_SessionId=eprlnvyulnga5rpjvsbqovt1'
             },
-            body: '<root><AgntId>IN01IN20INTU00000001</AgntId><Keyword>21835678617541456491</Keyword><CatId>'+ cat_id +'</CatId><Coverage>'+ cov +'</Coverage></root>'
+            body: '<root><AgntId>' + agntId + '</AgntId><Keyword>' + keyword + '</Keyword><CatId>' + cat_id + '</CatId><Coverage>' + cov + '</Coverage></root>'
 
         };
         request(options, function (error, response) {

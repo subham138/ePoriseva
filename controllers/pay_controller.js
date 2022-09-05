@@ -6,10 +6,11 @@ const xml2js = require('xml2js');
 const nodemailer = require('nodemailer');
 const dateformat = require('dateformat');
 const db = require('../core/database');
-var agntId = "IN01IN20INTU00000001";
-var keyword = "21835678617541456491",
-    client_id = "ec9370b4-dd3b-4f58-8c33-6f6e104ab642",
-    client_secret = "oQ7iX8fN3hA0jQ6vI5sO2bE3hU4dR5iJ6bA5cM6kK6oA2bM0rM";
+var agntId = "IN01IN03AGT000000002";
+var keyword = "AIAGT$20170704",
+    client_id = "3b67954e-0045-4455-9a94-2b98a82c07d7",
+    client_secret = "uQ1cQ3qB0jG6rP0qY1pF2wB8eQ1lO6oJ0eJ7pK1eG2bB0iD3kV",
+    end_point = "https://ibluatapig.indusind.com/app/uat/HubComfort/COUHubComfort/";
 // const payModule = require('../models/pay_model');
 // const pay_model = new payModule();
 
@@ -48,7 +49,7 @@ const get_biller = (cat_id, coverage, data, type) => {
             // console.log(body_data);
             var options = {
                 'method': 'POST',
-                'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetBillers',
+                'url': end_point + 'GetBillers',
                 'headers': {
                     'X-IBM-Client-Secret': client_secret,
                     'X-IBM-Client-Id': client_id,
@@ -84,7 +85,7 @@ const params = (biller_id, accpt_type) => {
             var params_data = accpt_type == '1' ? '<ReqTypes><Req>BR</Req></ReqTypes><ReqTypes><Req>PR</Req></ReqTypes>' : '<ReqTypes><Req>BR</Req></ReqTypes>';
             var options = {
                 'method': 'POST',
-                'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetParameters',
+                'url': end_point + 'GetParameters',
                 'headers': {
                     'X-IBM-Client-Secret': client_secret,
                     'X-IBM-Client-Id': client_id,
@@ -121,7 +122,7 @@ const pay_mode = (blr_id) => {
             // console.log(params_data);
             var bill_mode = {
                 'method': 'POST',
-                'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/GetPayModes',
+                'url': end_point + 'GetPayModes',
                 'headers': {
                     'X-IBM-Client-Secret': client_secret,
                     'X-IBM-Client-Id': client_id,
@@ -156,7 +157,7 @@ const get_bill = (agent_ref_id, body_data) => {
         return new Promise((resolve, reject) => {
             var bill_options = {
                 'method': 'POST',
-                'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/FetchBill',
+                'url': end_point + 'FetchBill',
                 'headers': {
                     'X-IBM-Client-Secret': client_secret,
                     'X-IBM-Client-Id': client_id,
@@ -208,7 +209,7 @@ const bill_pay = (ag_ref_id, ref_id, blr_id, mode, amt, type, req_body, f_st, s_
 
         var pay_req = {
             'method': 'POST',
-            'url': 'https://apig.indusind.com/ibl/prod/COUHubAPI/PayBill',
+            'url': end_point + 'PayBill',
             'headers': {
                 'X-IBM-Client-Secret': client_secret,
                 'X-IBM-Client-Id': client_id,
